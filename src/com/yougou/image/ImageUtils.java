@@ -3,7 +3,11 @@ package com.yougou.image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Scanner;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * 按款色编码复制和重命名图片
@@ -12,39 +16,24 @@ import java.util.Scanner;
  */
 public class ImageUtils {
 	public static void main(String[] args) throws Exception {
-		//在控制台输入条码，得到条码
-		Scanner in = new Scanner(System.in);
-		System.out.println("请输入条码：");
-		String insideCode = in.next();
-		String dirName = insideCode.substring(0, insideCode.length() - 3);
-		
-		String image = getImageName(dirName);
-		
-		//根据图片得到文件后缀名
-		File file = new File("E:\\image\\" + dirName + "\\" + image);
-		String oldName = file.getName();
-		int index = oldName.indexOf(".");
-		String suffix = oldName.substring(index);
-		
-		//循环复制图片到指定文件夹并重新命名
-		for (int i = 0; i < 9; i++) {
-			String newName = insideCode + "_" + i + suffix;
-			copyImage(dirName, newName);
+		FileInputStream fis = new FileInputStream("E:\\数字化\\图片上传明细.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(fis);
+		HSSFSheet hssf = wb.getSheetAt(0);
+		int num = hssf.getLastRowNum();
+		HSSFRow row1 = hssf.getRow(1);
+		HSSFCell cell1 = row1.getCell(5);
+		String s = cell1.toString();
+		int index = s.lastIndexOf("_");
+		String dirName = s.substring(0, index);
+		copyImage(dirName);
+		String[] arr = new String[num];
+		for (int i = 1; i <= num; i++) {
+			HSSFRow row2 = hssf.getRow(i);
+			HSSFCell cell2 = row2.getCell(5);
+			arr[i-1] = cell2.toString();
+			copyImage(dirName, arr[i - 1]);
 		}
-		
-		for (int i = 21; i < 23; i++) {
-			String newName = insideCode + "_" + i + suffix;
-			copyImage(dirName, newName);
-		}
-		
-		for (int i = 31; i < 34; i++) {
-			String newName = insideCode + "_" + i + suffix;
-			copyImage(dirName, newName);
-		}
-		
-		String newName = insideCode + "_" + 41 + suffix;
-		copyImage(dirName, newName);
-		System.out.println("图片复制并且重命名完成");
+		System.out.println("图片复制并重命名完成");
 	}
 
 	/**
@@ -52,8 +41,9 @@ public class ImageUtils {
 	 */
 	public static File getImage() {
 		File file = new File("C:\\Users\\Public\\Pictures\\Sample Pictures");
+		//files.length=8,files[2]=desktop.ini,排除。
 		File[] files = file.listFiles();
-		return files[0];
+		return files[1];
 	}
 	
 	/**
@@ -104,7 +94,7 @@ public class ImageUtils {
 			dir.mkdir();
 		}
 		FileInputStream fis = new FileInputStream("E:\\image\\" + dirName + "\\" + image);
-		FileOutputStream fos = new FileOutputStream(dir + "\\" + newName);
+		FileOutputStream fos = new FileOutputStream(dir + "\\" + newName + ".jpg");
  
 		int len = 0;
 		byte[] buf = new byte[1024];
