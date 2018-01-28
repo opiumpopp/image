@@ -10,8 +10,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
- * 按款色编码复制和重命名图片
- * @author deng.yq.sz
+ * 从excel中获取图片名然后复制图片并且重命名这些图片
+ * @author Orange丶Athena
  *
  */
 public class ImageUtils {
