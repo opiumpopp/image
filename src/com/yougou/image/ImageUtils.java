@@ -1,16 +1,18 @@
 package com.yougou.image;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 /**
  * 从excel中获取图片名然后复制图片并且重命名这些图片
  * @author Orange丶Athena
+ *
  */
 public class ImageUtils {
 	public static void main(String[] args) throws Exception {
@@ -69,6 +71,7 @@ public class ImageUtils {
 	
 	/**
 	 * 在指定目录下，拿到图片名
+	 * @param styleColorCode
 	 * @return
 	 */
 	public static String getImageName(String dirName) {
@@ -79,6 +82,7 @@ public class ImageUtils {
 
 	/**
 	 * 复制图片的方法
+	 * @param styleColorCode
 	 * @param newName
 	 * @throws Exception
 	 */
@@ -100,5 +104,4 @@ public class ImageUtils {
 		fis.close();
 		fos.close();
 	}
-
 }
